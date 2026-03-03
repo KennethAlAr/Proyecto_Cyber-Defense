@@ -9,7 +9,7 @@ services:
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
-      - "5432:5432"
+      - "8080:8080"
   api-gateway:
     build: ./api-gateway
     ports:
@@ -19,6 +19,8 @@ services:
     depends_on:
       - auth-service
       - transfer-service
+    networks:
+      - secure-net
   auth-service:
     build: ./auth-service
     ports:
@@ -46,3 +48,6 @@ services:
     build: ./audit-logs
     ports:
       - "${AUDIT_LOGS_PORT}:3002"
+  networks:
+    secure-net:
+      driver: bridge # Red aislada: Los servicios no se ven desde el exterior, solo vía Gateway
