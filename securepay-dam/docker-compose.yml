@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: securepay
+      POSTGRES_PASSWORD: securepass
+      POSTGRES_DB: securepay_db
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: securepay
+      DB_PASSWORD: securepass
+      DB_NAME: securepay_db
+    depends_on:
+      - db
+  transfer-service:
+    build: ./transfer-service
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: db
+      DB_USER: securepay
+      DB_PASSWORD: securepass
+      DB_NAME: securepay_db
+    depends_on:
+      - db

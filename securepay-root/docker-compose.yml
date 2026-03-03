@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "${API_GATEWAY_PORT}:8080"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - auth-service
+      - transfer-service
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "${AUTH_SERVICE_PORT}:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+  transfer-service:
+    build: ./transfer-service
+    ports:
+      - "${TRANSFER_SERVICE_PORT}:3001"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - db
+  audit-logs:
+    build: ./audit-logs
+    ports:
+      - "${AUDIT_LOGS_PORT}:3002"
