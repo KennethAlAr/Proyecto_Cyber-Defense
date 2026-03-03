@@ -10,6 +10,8 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "5432:5432"
+    networks:
+      - secure-net
   auth-service:
     build: ./auth-service
     ports:
@@ -21,6 +23,8 @@ services:
       DB_NAME: securepay_db
     depends_on:
       - db
+    networks:
+      - secure-net
   transfer-service:
     build: ./transfer-service
     ports:
@@ -32,3 +36,8 @@ services:
       DB_NAME: securepay_db
     depends_on:
       - db
+    networks:
+      - secure-net
+  networks:
+    secure-net:
+      driver: bridge # Red aislada: Los servicios no se ven desde el exterior, solo vía Gateway

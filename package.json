@@ -1,0 +1,27 @@
+{
+  "name": "proyecto_cyber-defense",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KennethAlAr/Proyecto_Cyber-Defense.git"
+  },
+  "keywords": [],
+  "author": "Kenneth Alonso Arce (http://kennethalonso.vercel.app/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KennethAlAr/Proyecto_Cyber-Defense/issues"
+  },
+  "homepage": "https://github.com/KennethAlAr/Proyecto_Cyber-Defense#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
